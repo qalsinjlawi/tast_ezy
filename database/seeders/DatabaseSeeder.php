@@ -20,7 +20,13 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             CourseSeeder::class,   
             CourseSectionSeeder::class,
-            
+            LessonSeeder::class,
+            EnrollmentSeeder::class,
+LessonProgressSeeder::class,
+ReviewSeeder::class,
+SubscriptionSeeder::class,
+CoursePaymentSeeder::class,
+SubscriptionPaymentSeeder::class,
             // أولاً المستخدمين (طلاب، معلمين، أدمن)
             // لو عندك ReviewSeeder، أضفه هنا
             // ReviewSeeder::class,
