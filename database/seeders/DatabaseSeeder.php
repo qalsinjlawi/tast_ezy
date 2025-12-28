@@ -16,9 +16,12 @@ class DatabaseSeeder extends Seeder
     {
         // تسجيل كل الـ Seeders بالترتيب المنطقي
         $this->call([
-            UserSeeder::class,          // أولاً المستخدمين (طلاب، معلمين، أدمن)
-            CategorySeeder::class,      // بعدين التصنيفات
-            CourseSeeder::class,        // ثم الكورسات (لأنها تحتاج معلمين وتصنيفات)
+            UserSeeder::class,
+            CategorySeeder::class,
+            CourseSeeder::class,   
+            CourseSectionSeeder::class,
+            
+            // أولاً المستخدمين (طلاب، معلمين، أدمن)
             // لو عندك ReviewSeeder، أضفه هنا
             // ReviewSeeder::class,
         ]);

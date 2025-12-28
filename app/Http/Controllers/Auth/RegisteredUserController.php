@@ -33,20 +33,31 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'string', 'in:student,instructor'], // فقط طالب أو معلم مسموح
+            'role' => ['required', 'in:student,instructor'], // التحقق: فقط طالب أو معلم (لا admin)
+            'phone' => ['nullable', 'string', 'max:20'],      // اختياري: إضافة رقم الهاتف
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'], // اختياري: رفع صورة
         ]);
 
+        // إنشاء المستخدم مع الحقول الجديدة
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role, // يخزن student أو instructor فقط
+            'role' => $request->role,
+            'phone' => $request->phone,
+            // إذا كان هناك رفع صورة (اختياري)
+            'avatar' => $request->hasFile('avatar') 
+                ? $request->file('avatar')->store('avatars', 'public') 
+                : null,
         ]);
 
+        // إطلاق حدث التسجيل (Breeze يستخدمه لإرسال الإيميل التأكيد)
         event(new Registered($user));
 
+        // تسجيل الدخول التلقائي بعد التسجيل
         Auth::login($user);
 
+        // التوجيه إلى الداشبورد (أو صفحة ترحيب حسب الدور)
         return redirect(route('dashboard', absolute: false));
     }
 }
